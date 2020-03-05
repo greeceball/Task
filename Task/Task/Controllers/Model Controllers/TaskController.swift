@@ -30,16 +30,32 @@ class TaskController {
     
     
     func add(taskWithName name: String, notes: String?, due: Date?) {
-        
+        Task(name: name, notes: notes, due: due)
+        saveToPersistentStore()
     }
+    
     func update(task: Task, name: String, notes: String?, due: Date?) {
         
     }
-    func remove(task: Task) {
+    
+    func removeTask(task: Task) {
+       
+        
+        CoreDataStack.context.delete(task)
+        
+        
+        
+        saveToPersistentStore()
+        
         
     }
+    
     func saveToPersistentStore() {
-        
+        do {
+            try CoreDataStack.context.save()
+        } catch {
+            print("There was an error saving the data!!! \(#function) \(error.localizedDescription)")
+        }
     }
     func fetchTasks() -> [Task] {
         
